@@ -1,6 +1,7 @@
 package android.flag.pt.challenge_it.myfirstapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +46,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         btnDecr.setOnClickListener(this);
 
         Button btnShow = (Button)findViewById(R.id.btnShow);
-        btnShow.setOnClickListener(this);
+        //btnShow.setOnClickListener(this);
 
         // The next code demonstrates the usage of the anonymous class for define
         // the click listeners for the buttons, instead of use the Activity itself.
@@ -64,6 +66,29 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
         */
+        btnShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "counter: " + txtCounter.getText(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button btnForSecondActivity = new Button(this);
+        btnForSecondActivity.setText("Go to next activity");
+        btnForSecondActivity.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT ));
+
+        LinearLayout rootLayout = (LinearLayout)findViewById(R.id.rootLayout);
+        rootLayout.addView(btnForSecondActivity);
+
+        btnForSecondActivity.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intentToOpenSecondActivity = new Intent(MainActivity.this, SecondActivity.class);
+                intentToOpenSecondActivity.putExtra(SecondActivity.COUNTER_VALUE_KEY_EXTRA, txtCounter.getText());
+                startActivity(intentToOpenSecondActivity);
+            }
+
+        });
     }
 
     @Override
@@ -90,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             txtCounter.setText((current - 1) + "");
         }
 
-        if(v.getId() == R.id.btnShow)
+        /*if(v.getId() == R.id.btnShow)
         {
 
             Context context = getApplicationContext();
@@ -101,7 +126,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             toast.show();
 
 
-        }
+        }*/
     }
     @Override
     public void onSaveInstanceState(Bundle outState){
